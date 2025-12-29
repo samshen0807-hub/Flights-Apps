@@ -47,6 +47,7 @@ export default async function BookingConfirmPage({
           </Link>
         </div>
       </div>
-      </main>
+      </div>
+    </main>
   );
 }
