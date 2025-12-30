@@ -11,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "FLights booking",
+  title: "FLights Ticket Booking",
   description: "Low-cost and discounted ticket booking system",
 };
 
