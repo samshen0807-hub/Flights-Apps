@@ -48,23 +48,21 @@ export async function updateSession(request: NextRequest, response?: NextRespons
   const user = data?.claims;
 
   if (
-    request.nextUrl.pathname !== "/" &&
     !user &&
-    !request.nextUrl.pathname.includes("/login") &&
-    !request.nextUrl.pathname.includes("/auth")
+    !isPublicPage(request.nextUrl.pathname)
   ) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    // Keep the locale if present, or default to something?
-    // For simplicity, we just redirect to /auth/login. 
-    // If the middleware is running after next-intl, the URL might already be rewritten? 
-    // Actually, request.nextUrl is the original URL.
-    
-    // Simple fix: Redirect to /auth/login, next-intl middleware will handle the locale on the next request if needed?
-    // No, if we return a redirect response here, it goes to the browser.
-    // If we redirect to "/auth/login", next-intl will see it as a new request.
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
+  }
+
+  function isPublicPage(pathname: string): boolean {
+    return pathname === "/" ||
+           pathname === "/en" ||
+           pathname === "/zh" ||
+           pathname.includes("/search") ||
+           pathname.includes("/auth") ||
+           pathname.includes("/login");
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
